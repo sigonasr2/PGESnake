@@ -30,19 +30,19 @@ public:
 		}
 }
 	void BorderCollisionCheck() {
-		if (SnakeXPos <= 5) {
+		if (SnakeXPos <= 3) {
 			GameOver = true;
 			SnakeDead();
 		}
-		if (SnakeXPos >= ScreenWidth() - 5) {
+		if (SnakeXPos >= ScreenWidth() - 3) {
 			GameOver = true;
 			SnakeDead();
 		}
-		if (SnakeYPos <= 5) {
+		if (SnakeYPos <= 3) {
 			GameOver = true;
 			SnakeDead();
 		}
-		if (SnakeYPos >= ScreenHeight() - 5) {
+		if (SnakeYPos >= ScreenHeight() - 3) {
 			GameOver = true;
 			SnakeDead();
 		}
@@ -85,13 +85,13 @@ public:
 		float speed = 20 * fElapsedTime;
 		Clear(olc::BLACK);
 		//Draw top border
-		DrawLine(5, 5, ScreenWidth() - 5, 5, olc::WHITE);
+		DrawLine(2, 2, ScreenWidth() - 2, 2, olc::WHITE);
 		//Draw left border
-		DrawLine(5, 5, 5, ScreenHeight() - 5, olc::WHITE);
+		DrawLine(2, 2, 2, ScreenHeight() - 2, olc::WHITE);
 		//Draw right border
-		DrawLine(ScreenWidth() - 5, 5, ScreenWidth() - 5, ScreenHeight() - 5, olc::WHITE);
+		DrawLine(ScreenWidth() - 2, 2, ScreenWidth() - 2, ScreenHeight() - 2, olc::WHITE);
 		//Draw bottom border
-		DrawLine(5, ScreenHeight() - 5, ScreenWidth() - 5, ScreenHeight() - 5, olc::WHITE);
+		DrawLine(2, ScreenHeight() - 2, ScreenWidth() - 2, ScreenHeight() - 2, olc::WHITE);
 
 		//Draw Snake
 		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
