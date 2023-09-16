@@ -14,33 +14,40 @@ public:
 	//Game variables
 	int score;
 	//Snake variables
-	int SnakeXPos = 50, SnakeYPos = 50, speed = 1;
+	float SnakeXPos = 50, SnakeYPos = 50;
 	int tailX[100], tailY[100], tailLength;
 	//Tail coordinates
 	int fposX, fposY, sposX, sposY;
 	//Target variables
 	int targetX, targetY;
 
+	bool GameOver;
 
-
-private:
-
-public:
-	bool OnUserUpdate(float fElapsedTime) override {
-		Clear(olc::BLACK);
-		//Draw top border
-		DrawLine(5, 5, ScreenWidth() - 5, 5, olc::WHITE);
-		//Draw left border
-		DrawLine(5, 5, 5, ScreenHeight() - 5, olc::WHITE);
-		//Draw right border
-		DrawLine(ScreenWidth() - 5, 5, ScreenWidth() - 5, ScreenHeight() - 5, olc::WHITE);
-		//Draw bottom border
-		DrawLine(5, ScreenHeight() - 5, ScreenWidth() - 5, ScreenHeight() - 5, olc::WHITE);
-
-		//Draw Snake
-		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::GREEN);
-
-		//Directions changes
+	void SnakeDead() {
+		if (GameOver == true) {
+			Clear(olc::BLACK);
+			DrawString(ScreenWidth() - ((ScreenWidth() / 2) + (ScreenWidth() / 2.8)), ScreenHeight() / 2 - 5, "Game Over", olc::RED, 1);
+		}
+}
+	void BorderCollisionCheck() {
+		if (SnakeXPos <= 5) {
+			GameOver = true;
+			SnakeDead();
+		}
+		if (SnakeXPos >= ScreenWidth() - 5) {
+			GameOver = true;
+			SnakeDead();
+		}
+		if (SnakeYPos <= 5) {
+			GameOver = true;
+			SnakeDead();
+		}
+		if (SnakeYPos >= ScreenHeight() - 5) {
+			GameOver = true;
+			SnakeDead();
+		}
+	}
+	void userInput(float speed) {
 		if (GetKey(olc::Key::UP).bPressed && dir != DOWN) {
 			dir = UP;
 		}
@@ -69,6 +76,32 @@ public:
 			SnakeYPos -= speed;
 			break;
 		}
+	}
+
+private:
+
+public:
+	bool OnUserUpdate(float fElapsedTime) override {
+		float speed = 20 * fElapsedTime;
+		Clear(olc::BLACK);
+		//Draw top border
+		DrawLine(5, 5, ScreenWidth() - 5, 5, olc::WHITE);
+		//Draw left border
+		DrawLine(5, 5, 5, ScreenHeight() - 5, olc::WHITE);
+		//Draw right border
+		DrawLine(ScreenWidth() - 5, 5, ScreenWidth() - 5, ScreenHeight() - 5, olc::WHITE);
+		//Draw bottom border
+		DrawLine(5, ScreenHeight() - 5, ScreenWidth() - 5, ScreenHeight() - 5, olc::WHITE);
+
+		//Draw Snake
+		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
+
+		//Border collision
+		BorderCollisionCheck();
+
+		//Directions changes
+		userInput(speed);
+
 		return true;
 	}
 
@@ -81,7 +114,7 @@ public:
 
 int main() {
 	Snake demo;
-	if (demo.Construct(200, 200, 5, 5))
+	if (demo.Construct(100, 100, 10, 10))
 		demo.Start();
 	return 0;
 }
