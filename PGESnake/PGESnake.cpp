@@ -14,7 +14,7 @@ public:
 	//Game variables
 	int score;
 	//Snake variables
-	int SnakeXPos, SnakeYPos, speed = 1;
+	int SnakeXPos = 50, SnakeYPos = 50, speed = 1;
 	int tailX[100], tailY[100], tailLength;
 	//Tail coordinates
 	int fposX, fposY, sposX, sposY;
@@ -81,7 +81,7 @@ public:
 
 int main() {
 	Snake demo;
-	if (demo.Construct(300, 300, 2, 2))
+	if (demo.Construct(200, 200, 5, 5))
 		demo.Start();
 	return 0;
 }
