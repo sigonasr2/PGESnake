@@ -19,8 +19,8 @@ public:
 	//Tail coordinates
 	int fposX, fposY, sposX, sposY;
 	//Target variables
-	int targetX, targetY;
-
+	float fruit1X, fruit1Y, fruit2X, fruit2Y;
+	bool fruit1 = false, fruit2 = false;
 	bool GameOver;
 
 	void SnakeDead() {
@@ -77,12 +77,47 @@ public:
 			break;
 		}
 	}
+	void FruitCoordGen() {
+		//Fruit1
+		if (fruit1 == false) {
+			fruit1X = rand() & ScreenWidth();
+			fruit1Y = rand() & ScreenHeight();
+			fruit1 = true;
+		}
+		if (fruit1X <= 2 || fruit1X >= ScreenWidth() - 2) {
+			fruit1X = rand() & ScreenWidth();
+		}
+		if (fruit1Y <= 2 || fruit1Y >= ScreenHeight() - 2) {
+			fruit1Y = rand() & ScreenHeight();
+		}
+		//Fruit2
+		//if (fruit2 == false) {
+			//fruit2X = rand() & ScreenWidth();
+			//fruit2Y = rand() & ScreenHeight();
+			//fruit2 = true;
+		//}
+		//if (fruit2X <= 2 || fruit2X >= ScreenWidth() - 2) {
+			//fruit1X = rand() & ScreenWidth();
+		//}
+		//if (fruit2Y <= 2 || fruit2Y >= ScreenHeight() - 2) {
+			//fruit1Y = rand() & ScreenHeight();
+		//}
+		//if (fruit1X == fruit2X) {
+			//fruit1X = rand() & ScreenWidth();
+		//}
+		//if (fruit1Y == fruit2Y) {
+			//fruit1Y = rand() & ScreenWidth();
+		//}
+	}
 
 private:
 
 public:
 	bool OnUserUpdate(float fElapsedTime) override {
 		float speed = 20 * fElapsedTime;
+		//Fruit coord gen
+		FruitCoordGen();
+
 		Clear(olc::BLACK);
 		//Draw top border
 		DrawLine(2, 2, ScreenWidth() - 2, 2, olc::WHITE);
@@ -95,6 +130,16 @@ public:
 
 		//Draw Snake
 		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
+
+		//Draw fruit
+		DrawRect(fruit1X, fruit1Y, 1, 1, olc::RED);
+		//DrawRect(fruit2X, fruit2Y, 1, 1, olc::RED);
+
+		//Fruit collision
+		if (SnakeXPos == fruit1X && SnakeYPos == fruit1Y) {
+			score++;
+			fruit1 = false;
+		}
 
 		//Border collision
 		BorderCollisionCheck();
