@@ -19,7 +19,7 @@ public:
 	//Tail coordinates
 	int fposX, fposY, sposX, sposY;
 	//Target variables
-	float fruit1X, fruit1Y, fruit2X, fruit2Y;
+	int fruit1X, fruit1Y, fruit2X, fruit2Y;
 	bool fruit1 = false, fruit2 = false;
 	bool GameOver;
 
@@ -136,7 +136,7 @@ public:
 		//DrawRect(fruit2X, fruit2Y, 1, 1, olc::RED);
 
 		//Fruit collision
-		if (SnakeXPos == fruit1X && SnakeYPos == fruit1Y) {
+		if (floor(SnakeXPos) == fruit1X && floor(SnakeYPos) == fruit1Y) {
 			score++;
 			fruit1 = false;
 		}
