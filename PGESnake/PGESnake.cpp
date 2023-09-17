@@ -14,10 +14,10 @@ public:
 	//Game variables
 	int score;
 	//Snake variables
-	float SnakeXPos = 50, SnakeYPos = 50;
+	float SnakeXPos, SnakeYPos;
 	int tailX[100], tailY[100], tailLength;
 	//Tail coordinates
-	int fposX, fposY, sposX, sposY;
+	int fposX, fposY = tailY[0], sposX = tailX[0], sposY;
 	//Target variables
 	int fruit1X, fruit1Y, fruit2X, fruit2Y;
 	bool fruit1 = false, fruit2 = false;
@@ -65,12 +65,15 @@ public:
 		switch (dir) {
 		case LEFT:
 			SnakeXPos -= speed;
+			tailX[0] = SnakeXPos + 1;
 			break;
 		case RIGHT:
 			SnakeXPos += speed;
+			tailX[0] = SnakeXPos - 1;
 			break;
 		case DOWN:
 			SnakeYPos += speed;
+
 			break;
 		case UP:
 			SnakeYPos -= speed;
@@ -115,7 +118,6 @@ private:
 public:
 	bool OnUserUpdate(float fElapsedTime) override {
 		float speed = 20 * fElapsedTime;
-		int SnakeAPos, SnakeBPos, SnakeCPos, SnakeDPos;
 		//Fruit coord gen
 		FruitCoordGen();
 
@@ -129,18 +131,24 @@ public:
 		//Draw bottom border
 		DrawLine(2, ScreenHeight() - 2, ScreenWidth() - 2, ScreenHeight() - 2, olc::WHITE);
 
+		olc::vi2d SnakeHead(SnakeXPos, SnakeYPos);
+		olc::vi2d SnakeHeadSize(2, 2);
+
+		olc::vi2d Fruit(fruit1X, fruit1Y);
+		olc::vu2d FruitSize(2, 2);
+
+		//Snake and fruit collision
+		if (SnakeHead.x < Fruit.x + FruitSize.x && SnakeHead.x + SnakeHeadSize.x > Fruit.x && SnakeHead.y < Fruit.y + FruitSize.y && SnakeHead.y + SnakeHeadSize.y > Fruit.y) {
+			fruit1 = false;
+			score++;
+			tailLength++;
+		}
+
 		//Draw Snake
 		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
 
 		//Draw fruit
 		DrawRect(fruit1X, fruit1Y, 1, 1, olc::RED);
-		//DrawRect(fruit2X, fruit2Y, 1, 1, olc::RED);
-
-		//Fruit collision
-		if ((floor(SnakeXPos) + 1 == fruit1X && floor(SnakeYPos) + 1 == fruit1Y) || (floor(SnakeXPos) - 1 == fruit1X && floor(SnakeYPos) - 1 == fruit1Y) || (floor(SnakeXPos) + 1 == fruit1X && floor(SnakeYPos) + 1 == fruit1Y)) {
-			score++;
-			fruit1 = false;
-		}
 
 		//Border collision
 		BorderCollisionCheck();
@@ -152,8 +160,24 @@ public:
 	}
 
 	bool OnUserCreate() override {
+		srand(time(NULL));
 		dir = STOP;
-
+		//Snake X coord gen
+		SnakeXPos = rand() & ScreenWidth();
+		if (SnakeXPos <= 2 || SnakeXPos >= ScreenWidth() - 2) {
+			SnakeXPos = rand() & ScreenWidth();
+		}
+		if (SnakeXPos <= 2 || SnakeXPos >= ScreenHeight() - 2) {
+			SnakeXPos = rand() & ScreenHeight();
+		}
+		//Snake Y coord gen
+		SnakeYPos = rand() & ScreenWidth();
+		if (SnakeYPos <= 2 || SnakeYPos >= ScreenWidth() - 2) {
+			SnakeYPos = rand() & ScreenWidth();
+		}
+		if (SnakeYPos <= 2 || SnakeYPos >= ScreenHeight() - 2) {
+			SnakeYPos = rand() & ScreenHeight();
+		}
 		return true;
 	}
 };
