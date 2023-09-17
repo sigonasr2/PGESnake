@@ -115,6 +115,7 @@ private:
 public:
 	bool OnUserUpdate(float fElapsedTime) override {
 		float speed = 20 * fElapsedTime;
+		int SnakeAPos, SnakeBPos, SnakeCPos, SnakeDPos;
 		//Fruit coord gen
 		FruitCoordGen();
 
@@ -136,7 +137,7 @@ public:
 		//DrawRect(fruit2X, fruit2Y, 1, 1, olc::RED);
 
 		//Fruit collision
-		if (floor(SnakeXPos) == fruit1X && floor(SnakeYPos) == fruit1Y) {
+		if ((floor(SnakeXPos) + 1 == fruit1X && floor(SnakeYPos) + 1 == fruit1Y) || (floor(SnakeXPos) - 1 == fruit1X && floor(SnakeYPos) - 1 == fruit1Y) || (floor(SnakeXPos) + 1 == fruit1X && floor(SnakeYPos) + 1 == fruit1Y)) {
 			score++;
 			fruit1 = false;
 		}
