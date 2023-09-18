@@ -147,6 +147,11 @@ public:
 		//Draw Snake
 		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
 
+		//Draw tail
+		if (tailLength >= 1) {
+			DrawRect(SnakeXPos - 1, SnakeYPos - 1, 1, 1, olc::GREEN);
+		}
+
 		//Draw fruit
 		DrawRect(fruit1X, fruit1Y, 1, 1, olc::RED);
 
