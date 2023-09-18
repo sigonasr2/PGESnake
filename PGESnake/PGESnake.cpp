@@ -15,7 +15,7 @@ public:
 	int score;
 	//Snake variables
 	float SnakeXPos, SnakeYPos;
-	float tailX[100], tailY[100], tailLength;
+	int tailX[100], tailY[100], tailLength = 0;
 	//Tail Coordinates
 	float fposX, fposY, sposX, sposY;
 	float x, y;
@@ -150,7 +150,7 @@ public:
 		fposY = tailY[0];
 		tailX[0] = x;
 		tailY[0] = y;
-		for (int i = 1; i < tailLength; i++) {
+		for (int i = 0; i < tailLength; i++) {
 			x = SnakeXPos;
 			y = SnakeYPos;
 			sposX = tailX[i];
@@ -168,7 +168,6 @@ public:
 		//Draw Snake tail
 		if (tailLength > 0) {
 			for (int k = 0; k < tailLength; k++) {
-				DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::GREEN);
 				DrawRect(tailX[k], tailY[k], 1, 1, olc::GREEN);
 			}
 		}
