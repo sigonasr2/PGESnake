@@ -29,7 +29,7 @@ public:
 			Clear(olc::BLACK);
 			DrawString(ScreenWidth() - ((ScreenWidth() / 2) + (ScreenWidth() / 2.8)), ScreenHeight() / 2 - 5, "Game Over", olc::RED, 1);
 		}
-}
+	}
 	void BorderCollisionCheck() {
 		if (SnakeXPos <= 3) {
 			GameOver = true;
@@ -143,37 +143,21 @@ public:
 		}
 
 		//Tail
-		fposX = tailX[0];
-		fposY = tailY[0];
-		for (int i = 0; i < tailLength; i++) {
-			sposX = tailX[i];
-			sposY = tailY[i];
-			tailX[i] = fposX;
-			tailY[i] = fposY;
-			sposX = fposX;
-			sposY = fposY;
-			if (dir == UP) {
-				tailX[0] = floor(SnakeXPos);
-				tailY[0] = floor(SnakeYPos) + 1;
-			}
-			if (dir == DOWN) {
-				tailX[0] = floor(SnakeXPos);
-				tailY[0] = floor(SnakeYPos) - 1;
-			}
-			if (dir == LEFT) {
-				tailX[0] = floor(SnakeXPos) + 1;
-				tailY[0] = floor(SnakeYPos);
-			}
-			if (dir == RIGHT) {
-				tailX[0] = floor(SnakeXPos) - 1;
-				tailY[0] = floor(SnakeYPos);
-			}
-		}
-
-		//Draw Snake tail
 		if (tailLength > 0) {
-			for (int i = 0; i < tailLength; i++) {
-				DrawRect(tailX[i], tailY[i], 1, 1, olc::GREEN);
+			fposX = tailX[1];
+			fposY = tailY[1];
+			for (int i = 1; i < tailLength; i++) {
+				tailX[1] = SnakeXPos;
+				tailY[1] = SnakeYPos;
+				sposX = fposX;
+				sposY = fposY;
+				tailX[i] = sposX;
+				tailY[i] = sposY;
+			}
+
+			//Draw Snake tail
+			for (int i = 1; i < tailLength; i++) {
+				DrawRect(tailX[i] - i, tailY[i] - i, 1, 1, olc::GREEN);
 			}
 		}
 
