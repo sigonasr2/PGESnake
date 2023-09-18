@@ -66,15 +66,12 @@ public:
 		switch (dir) {
 		case LEFT:
 			SnakeXPos -= speed;
-			tailX[0] = SnakeXPos + 1;
 			break;
 		case RIGHT:
 			SnakeXPos += speed;
-			tailX[0] = SnakeXPos - 1;
 			break;
 		case DOWN:
 			SnakeYPos += speed;
-
 			break;
 		case UP:
 			SnakeYPos -= speed;
@@ -148,27 +145,35 @@ public:
 		//Tail
 		fposX = tailX[0];
 		fposY = tailY[0];
-		tailX[0] = x;
-		tailY[0] = y;
 		for (int i = 0; i < tailLength; i++) {
-			x = SnakeXPos;
-			y = SnakeYPos;
 			sposX = tailX[i];
 			sposY = tailY[i];
 			tailX[i] = fposX;
 			tailY[i] = fposY;
-			fposX = sposX;
-			fposY = sposY;
-			while (tailX[i] == fruit1X && tailY[i] == fruit1Y) {
-				fruit1X = rand() % ScreenWidth();
-				fruit1Y = rand() % ScreenHeight();
+			sposX = fposX;
+			sposY = fposY;
+			if (dir == UP) {
+				tailX[0] = floor(SnakeXPos);
+				tailY[0] = floor(SnakeYPos) + 1;
+			}
+			if (dir == DOWN) {
+				tailX[0] = floor(SnakeXPos);
+				tailY[0] = floor(SnakeYPos) - 1;
+			}
+			if (dir == LEFT) {
+				tailX[0] = floor(SnakeXPos) + 1;
+				tailY[0] = floor(SnakeYPos);
+			}
+			if (dir == RIGHT) {
+				tailX[0] = floor(SnakeXPos) - 1;
+				tailY[0] = floor(SnakeYPos);
 			}
 		}
 
 		//Draw Snake tail
 		if (tailLength > 0) {
-			for (int k = 0; k < tailLength; k++) {
-				DrawRect(tailX[k], tailY[k], 1, 1, olc::GREEN);
+			for (int i = 0; i < tailLength; i++) {
+				DrawRect(tailX[i], tailY[i], 1, 1, olc::GREEN);
 			}
 		}
 
