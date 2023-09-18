@@ -15,10 +15,10 @@ public:
 	int score;
 	//Snake variables
 	float SnakeXPos, SnakeYPos;
-	int tailX[100], tailY[100], tailLength;
+	float tailX[100], tailY[100], tailLength;
 	//Tail Coordinates
-	int fposX, fposY, sposX, sposY;
-	int x, y;
+	float fposX, fposY, sposX, sposY;
+	float x, y;
 	//Target variables
 	int fruit1X, fruit1Y, fruit2X, fruit2Y;
 	bool fruit1 = false, fruit2 = false;
@@ -145,15 +145,14 @@ public:
 			tailLength++;
 		}
 
-		//Draw Snake
-		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
-
 		//Tail
 		fposX = tailX[0];
 		fposY = tailY[0];
 		tailX[0] = x;
 		tailY[0] = y;
 		for (int i = 1; i < tailLength; i++) {
+			x = SnakeXPos;
+			y = SnakeYPos;
 			sposX = tailX[i];
 			sposY = tailY[i];
 			tailX[i] = fposX;
@@ -168,10 +167,15 @@ public:
 
 		//Draw Snake tail
 		if (tailLength > 0) {
-			for (int k = 1; k < tailLength; k++) {
+			for (int k = 0; k < tailLength; k++) {
+				DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::GREEN);
 				DrawRect(tailX[k], tailY[k], 1, 1, olc::GREEN);
 			}
 		}
+
+		//Draw Snake
+		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
+
 		//Draw fruit
 		DrawRect(fruit1X, fruit1Y, 1, 1, olc::RED);
 
