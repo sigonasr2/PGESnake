@@ -14,7 +14,7 @@ public:
 	//Game variables
 	int score;
 	//Snake variables
-	float SnakeXPos, SnakeYPos;
+	float SnakeXPos, SnakeYPos, OldSnakeXPos, OldSnakeYPos;
 	int tailX[100], tailY[100], tailLength = 0;
 	//Tail Coordinates
 	float fposX, fposY, sposX, sposY;
@@ -65,15 +65,19 @@ public:
 		//Move Snake
 		switch (dir) {
 		case LEFT:
+			OldSnakeXPos = SnakeXPos;
 			SnakeXPos -= speed;
 			break;
 		case RIGHT:
+			OldSnakeXPos = SnakeXPos;
 			SnakeXPos += speed;
 			break;
 		case DOWN:
+			OldSnakeYPos = SnakeXPos;
 			SnakeYPos += speed;
 			break;
 		case UP:
+			OldSnakeYPos = SnakeXPos;
 			SnakeYPos -= speed;
 			break;
 		}
@@ -115,10 +119,8 @@ private:
 
 public:
 	bool OnUserUpdate(float fElapsedTime) override {
-		float speed = 20 * fElapsedTime;
-		//Fruit coord gen
-		FruitCoordGen();
 
+		float speed = 20 * fElapsedTime;
 		Clear(olc::BLACK);
 		//Draw top border
 		DrawLine(2, 2, ScreenWidth() - 2, 2, olc::WHITE);
@@ -135,43 +137,43 @@ public:
 		olc::vi2d Fruit(fruit1X, fruit1Y);
 		olc::vu2d FruitSize(2, 2);
 
+		//Directions changes
+		userInput(speed);
+
 		//Snake and fruit collision
-		if (SnakeHead.x < Fruit.x + FruitSize.x && SnakeHead.x + SnakeHeadSize.x > Fruit.x && SnakeHead.y < Fruit.y + FruitSize.y && SnakeHead.y + SnakeHeadSize.y > Fruit.y) {
+		if (SnakeHead.x < Fruit.x + FruitSize.x &&
+			SnakeHead.x + SnakeHeadSize.x > Fruit.x &&
+			SnakeHead.y < Fruit.y + FruitSize.y &&
+			SnakeHead.y + SnakeHeadSize.y > Fruit.y) {
 			fruit1 = false;
 			score++;
 			tailLength++;
 		}
 
-		//Tail
-		if (tailLength > 0) {
-			fposX = tailX[1];
-			fposY = tailY[1];
-			for (int i = 1; i < tailLength; i++) {
-				tailX[1] = SnakeXPos;
-				tailY[1] = SnakeYPos;
-				sposX = fposX;
-				sposY = fposY;
-				tailX[i] = sposX;
-				tailY[i] = sposY;
-			}
+		//Draw fruit
+		DrawRect(fruit1X, fruit1Y, 1, 1, olc::RED);
 
-			//Draw Snake tail
-			for (int i = 1; i < tailLength; i++) {
-				DrawRect(tailX[i] - i, tailY[i] - i, 1, 1, olc::GREEN);
+		//Fruit coord gen
+		FruitCoordGen();
+
+		//Border collision
+		BorderCollisionCheck();
+
+		//Tail
+		for (int i = 1; i <= tailLength; i++) {
+			tailX[1] = OldSnakeXPos;
+			tailY[1] = OldSnakeYPos;
+		}
+
+		//Draw Snake tail
+		if (tailLength >= 1) {
+			for (int i = 1; i <= tailLength; i++) {
+				DrawRect(tailX[i], tailY[i], 1, 1, olc::GREEN);
 			}
 		}
 
 		//Draw Snake
 		DrawRect(SnakeXPos, SnakeYPos, 1, 1, olc::DARK_GREEN);
-
-		//Draw fruit
-		DrawRect(fruit1X, fruit1Y, 1, 1, olc::RED);
-
-		//Border collision
-		BorderCollisionCheck();
-
-		//Directions changes
-		userInput(speed);
 
 		return true;
 	}
@@ -181,18 +183,18 @@ public:
 		dir = STOP;
 		//Snake X coord gen
 		SnakeXPos = rand() & ScreenWidth();
-		if (SnakeXPos <= 2 || SnakeXPos >= ScreenWidth() - 2) {
+		if (SnakeXPos <= 3 || SnakeXPos >= ScreenWidth() - 3) {
 			SnakeXPos = rand() & ScreenWidth();
 		}
-		if (SnakeXPos <= 2 || SnakeXPos >= ScreenHeight() - 2) {
+		if (SnakeXPos <= 3 || SnakeXPos >= ScreenHeight() - 3) {
 			SnakeXPos = rand() & ScreenHeight();
 		}
 		//Snake Y coord gen
 		SnakeYPos = rand() & ScreenWidth();
-		if (SnakeYPos <= 2 || SnakeYPos >= ScreenWidth() - 2) {
+		if (SnakeYPos <= 3 || SnakeYPos >= ScreenWidth() - 3) {
 			SnakeYPos = rand() & ScreenWidth();
 		}
-		if (SnakeYPos <= 2 || SnakeYPos >= ScreenHeight() - 2) {
+		if (SnakeYPos <= 3 || SnakeYPos >= ScreenHeight() - 3) {
 			SnakeYPos = rand() & ScreenHeight();
 		}
 		return true;
