@@ -15,7 +15,8 @@ public:
 	int score;
 	//Snake variables
 	float SnakeXPos, SnakeYPos;
-	int tailX[100], tailY[100], tailLength = 0;
+	float tailUpdateTimer=0;
+	int tailX[1000], tailY[1000], tailLength = 0;
 	float x, y;
 	//Target variables
 	int fruit1X, fruit1Y, fruit2X, fruit2Y;
@@ -138,7 +139,7 @@ public:
 			SnakeHead.y + SnakeHeadSize.y > Fruit.y) {
 			fruit1 = false;
 			score++;
-			tailLength+=10;
+			tailLength++;
 		}
 
 		//Draw fruit
@@ -150,14 +151,18 @@ public:
 		//Border collision
 		BorderCollisionCheck();
 
-		//In order to create a tail following trail, start from the back-most tail and work your way up to the front, setting the previous tail's position to the current tail index's position.
-		for (int i = tailLength - 1; i > 0; i--) {
-			tailX[i]=tailX[i-1];
-			tailY[i]=tailY[i-1];
+		tailUpdateTimer -= fElapsedTime; //Decrement the tail timer by the game elapsed time.
+		if ( tailUpdateTimer <= 0 ) {
+			//In order to create a tail following trail, start from the back-most tail and work your way up to the front, setting the previous tail's position to the current tail index's position.
+			for (int i = tailLength - 1; i > 0; i--) {
+				tailX[i]=tailX[i-1];
+				tailY[i]=tailY[i-1];
+			}
+			//Now set the front-most tail to the current snake head's position.
+			tailX[0]=SnakeXPos;
+			tailY[0]=SnakeYPos;
+			tailUpdateTimer=0.05; //Every 0.05 seconds we will re-update the tail positions instead of doing it by frame-based timing.
 		}
-		//Now set the front-most tail to the current snake head's position.
-		tailX[0]=SnakeXPos;
-		tailY[0]=SnakeYPos;
 
 		//Draw Snake tail
 		if (tailLength >= 1) {
