@@ -65,19 +65,19 @@ public:
 		//Move Snake
 		switch (dir) {
 		case LEFT:
-			OldSnakeXPos = SnakeXPos;
+			OldSnakeXPos = SnakeXPos + 1;
 			SnakeXPos -= speed;
 			break;
 		case RIGHT:
-			OldSnakeXPos = SnakeXPos;
+			OldSnakeXPos = SnakeXPos - 1;
 			SnakeXPos += speed;
 			break;
 		case DOWN:
-			OldSnakeYPos = SnakeXPos;
+			OldSnakeYPos = SnakeYPos - 1;
 			SnakeYPos += speed;
 			break;
 		case UP:
-			OldSnakeYPos = SnakeXPos;
+			OldSnakeYPos = SnakeYPos + 1;
 			SnakeYPos -= speed;
 			break;
 		}
