@@ -65,22 +65,22 @@ public:
 		//Move Snake
 		switch (dir) {
 		case LEFT:
-			OldSnakeXPos = SnakeXPos + speed;
+			OldSnakeXPos = SnakeXPos + 2;
 			OldSnakeYPos = SnakeYPos;
 			SnakeXPos -= speed;
 			break;
 		case RIGHT:
-			OldSnakeXPos = SnakeXPos - speed;
+			OldSnakeXPos = SnakeXPos - 2;
 			OldSnakeYPos = SnakeYPos;
 			SnakeXPos += speed;
 			break;
 		case DOWN:
-			OldSnakeYPos = SnakeYPos - speed;
+			OldSnakeYPos = SnakeYPos - 2;
 			OldSnakeXPos = SnakeXPos;
 			SnakeYPos += speed;
 			break;
 		case UP:
-			OldSnakeYPos = SnakeYPos + speed;
+			OldSnakeYPos = SnakeYPos + 2;
 			OldSnakeXPos = SnakeXPos;
 			SnakeYPos -= speed;
 			break;
@@ -164,9 +164,15 @@ public:
 		BorderCollisionCheck();
 
 		//Tail
+		fposX = OldSnakeXPos;
+		fposY = OldSnakeYPos;
 		for (int i = 1; i <= tailLength; i++) {
-			tailX[1] = OldSnakeXPos;
-			tailY[1] = OldSnakeYPos;
+			sposX = tailX[i];
+			sposY = tailY[i];
+			tailX[i] = fposX;
+			tailY[i] = fposY;
+			fposX = sposX;
+			fposY = sposY;
 		}
 
 		//Draw Snake tail
